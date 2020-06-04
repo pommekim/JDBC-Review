@@ -178,13 +178,42 @@ public class ScoreDAO {
 	//이름 검색 메서드
 	public List<Scores> search(String keyword) {
 		
+		List<Scores> scoreList = new ArrayList<>();
 		//sql문에 %가 절대 들어가면 안된다는 점!!!
 		String sql = "SELECT * FROM scores WHERE name LIKE ?";
 		
-		pstmt.setString(1, "%" + keyword + "%");
-		
-		
-		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, keyword);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Scores score = new Scores(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getInt("kor"),
+						rs.getInt("eng"),
+						rs.getInt("math"),
+						rs.getInt("total"),
+						rs.getDouble("average")
+						);
+				scoreList.add(score);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return scoreList;
 		
 	}
 	
