@@ -5,10 +5,10 @@
     pageEncoding="UTF-8"%>
     
     <%
-    	//BoardDAO 클래스의 selectAll()을 호출하여
+    	//BoardDAO 클래스의 selectAll()를 호출하여
     	//DB에 들어있는 모든 글들을 리스트로 리턴받으셔야 합니다.
-    	List<Board> articles = BoardDAO.getInstance().selectAll();
     	
+    	List<Board> articles = BoardDAO.getInstance().selectAll();
     %>
     
 <!DOCTYPE html>
@@ -20,10 +20,11 @@
 <body>
 	<!-- 
 		DB에서 얻어온 글이 하나도 없을 때는
-		'게시물이 존재하지 않습니다.'라는 문장을 브라우저에 띄워주세요.
+		'게시물이 존재하지 않습니다.' 문장을 브라우저에 띄워주세요.
 	 -->
-	<%if(articles.size() > 0) { %>
-
+	 
+	 <% if(articles.size() > 0) { %>
+	 
 	<table border="1">
 		<thead>
 			<tr>
@@ -36,28 +37,44 @@
 		<tbody>
 			<!-- 
 				selectAll() 결과값으로 리턴받은 리스트를
-				반목문을 사용하여 하나씩 테이블에 출력해주시면 되겠습니다.
+				 반복문을 사용하여 하나씩 테이블에 출력해 주시면 되겠습니다.
 			 -->
-			<%for(Board b : articles) { %>
-			<tr>
-				<td><%=b.getBoardId() %></td>
-				<td><%=b.getWriter() %></td>
-				<td>
-					<a href="content.jsp?boardId=<%=b.getBoardId() %>"><%=b.getTitle() %></a>
-				</td>
-				<td>[삭제]</td>
-			</tr>
-			<% } %>
+			 <% for(Board board : articles) { %>
+			 	<tr>
+			 		<td><%=board.getBoardId() %></td>
+			 		<td><%=board.getWriter() %></td>
+			 		<td>
+			 			<a href="content.jsp?bId=<%=board.getBoardId()%>"><%=board.getTitle() %></a>
+			 		</td>
+			 		<td>
+			 			<a href="delete.jsp?bId=<%=board.getBoardId()%>">[삭제]</a>
+			 		</td>
+			 	</tr>
+			 <% } %>
+			 
 		</tbody>
+	
 	</table>
 	
 	<% } else { %>
 		<p>게시물이 존재하지 않습니다.</p>
 	<% } %>
-	
-	<!-- 글 작성 링크 추가하기. -->
+
 	<br>
 	<a href="write.jsp">새 글 작성하기</a>
-
+	<!--  글 작성 링크 추가하기. -->
+	
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
